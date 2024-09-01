@@ -1,5 +1,6 @@
 from django.db import models
 
+from materials.validators import UrlValidator
 from users.models import User
 
 
@@ -49,6 +50,7 @@ class Lesson(models.Model):
         null=True,
         verbose_name="Ссылка на выидео",
         help_text="Ссылка на выидео",
+
     )
     owner = models.ForeignKey(
         User,
