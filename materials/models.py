@@ -1,7 +1,6 @@
 from django.db import models
 
-from materials.validators import UrlValidator
-from users.models import User
+from config import settings
 
 
 class Course(models.Model):
@@ -15,7 +14,7 @@ class Course(models.Model):
     )
     description = models.TextField(blank=True, null=True, help_text="Описание")
     owner = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -50,10 +49,9 @@ class Lesson(models.Model):
         null=True,
         verbose_name="Ссылка на выидео",
         help_text="Ссылка на выидео",
-
     )
     owner = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,

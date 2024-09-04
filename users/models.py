@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-# from materials.models import Course, Lesson
+from materials.models import Course
 
 
 class User(AbstractUser):
@@ -55,7 +55,6 @@ class Payments(models.Model):
     )
     paid_for_course = models.CharField(
         "Course.name",
-        # on_delete=models.SET_NULL,
         max_length=150,
         help_text="За какой курс была оплата",
         blank=True,
@@ -63,7 +62,6 @@ class Payments(models.Model):
     )
     paid_for_lesson = models.CharField(
         "Lesson.name",
-        # on_delete=models.SET_NULL,
         max_length=150,
         help_text="За какой урок была оплата",
         blank=True,
@@ -84,3 +82,28 @@ class Payments(models.Model):
     class Meta:
         verbose_name = "Платёж"
         verbose_name_plural = "Платежи"
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name="Пользователь",
+        max_length=150,
+        help_text="Кто подписан",
+    )
+
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        verbose_name="Курс",
+        max_length=150,
+        help_text="На какой курс подписан",
+    )
+
+    def __str__(self):
+        return f"{self.user} подписан на курс: {self.course}"
+
+    class Meta:
+        verbose_name = "Подписка"
+        verbose_name_plural = "Подписки"

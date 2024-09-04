@@ -8,5 +8,5 @@ class UrlValidator:
 
     def __call__(self, value):
         obj = dict(value).get(self.field)
-        if 'youtube.com' not in obj:
-            raise ValidationError('Only urls from YouTube allowed')
+        if "youtube.com" not in obj:
+            raise ValidationError("Only urls from YouTube allowed")
