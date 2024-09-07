@@ -1,12 +1,12 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from users.models import Payments, User
+from users.models import Payment, User
 
 
-class PaymentsSerializer(ModelSerializer):
+class PaymentSerializer(ModelSerializer):
     class Meta:
-        model = Payments
+        model = Payment
         fields = (
             "user",
             "payment_date",

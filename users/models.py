@@ -39,7 +39,7 @@ class User(AbstractUser):
         verbose_name_plural = "Пользователи"
 
 
-class Payments(models.Model):
+class Payment(models.Model):
     payment_by = (("cash", "cash"), ("bank transfer", "bank transfer"))
     user = models.ForeignKey(
         User,
@@ -67,7 +67,7 @@ class Payments(models.Model):
         blank=True,
         null=True,
     )
-    amount = models.FloatField(
+    amount = models.PositiveIntegerField(
         verbose_name="Сумма оплаты",
         help_text="Укажите сумму оплаты",
     )
@@ -78,10 +78,27 @@ class Payments(models.Model):
         verbose_name="Способ оплаты",
         help_text="Выбрать способ оплаты",
     )
+    session_id = models.CharField(
+        max_length=255,
+        help_text="ID сессии",
+        verbose_name="ID сессии",
+        blank=True,
+        null=True,
+    )
+    link = models.URLField(
+        max_length=400,
+        help_text="Ссылка на оплату",
+        blank=True,
+        null=True,
+        verbose_name="Ссылка на оплату",
+    )
 
     class Meta:
         verbose_name = "Платёж"
         verbose_name_plural = "Платежи"
+
+    def __str__(self):
+        return f"{self.user} оплатил курс(урок): {self.paid_for_course}({self.paid_for_lesson}) на сумму {self.amount}"
 
 
 class Subscription(models.Model):
@@ -107,3 +124,5 @@ class Subscription(models.Model):
     class Meta:
         verbose_name = "Подписка"
         verbose_name_plural = "Подписки"
+
+

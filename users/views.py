@@ -8,8 +8,9 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from materials.models import Course
-from users.models import Payments, Subscription, User
-from users.serializers import PaymentsSerializer, UserSerializer, SubscriptionSerializer
+from users.models import Payment, Subscription, User
+from users.serializers import PaymentSerializer, UserSerializer, SubscriptionSerializer
+from users.service import create_stripe_price, create_stripe_session
 
 
 class UserViewSet(ModelViewSet):
@@ -23,32 +24,40 @@ class UserViewSet(ModelViewSet):
         user.save()
 
 
-class PaymentsCreateApiView(CreateAPIView):
-    queryset = Payments.objects.all()
-    serializer_class = PaymentsSerializer
+class PaymentCreateApiView(CreateAPIView):
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
+
+    def payment_create(self, serializer):
+        payment = serializer.save(user=self.request.user)
+        price = create_stripe_price
+        session_id, session_link = create_stripe_session(price)
+        payment.session_id = session_id
+        session_id.session_link = session_link
+        payment.save()
 
 
-class PaymentsListApiView(ListAPIView):
-    queryset = Payments.objects.all()
-    serializer_class = PaymentsSerializer
+class PaymentListApiView(ListAPIView):
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ("payment_date",)
     filterset_fields = ("paid_for_course", "paid_for_lesson", "payment_method")
 
 
-class PaymentsRetrieveAPIView(RetrieveAPIView):
-    queryset = Payments.objects.all()
-    serializer_class = PaymentsSerializer
+class PaymentRetrieveAPIView(RetrieveAPIView):
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
 
 
-class PaymentsDestroyAPIView(DestroyAPIView):
-    queryset = Payments.objects.all()
-    serializer_class = PaymentsSerializer
+class PaymentDestroyAPIView(DestroyAPIView):
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
 
 
-class PaymentsUpdateAPIView(UpdateAPIView):
-    queryset = Payments.objects.all()
-    serializer_class = PaymentsSerializer
+class PaymentUpdateAPIView(UpdateAPIView):
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
 
 
 class SubscriptionAPIView(APIView):

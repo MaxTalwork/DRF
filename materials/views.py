@@ -11,7 +11,6 @@ from materials.serializers import (CourseDetailSerializer, CourseSerializer,
 from users.permissions import IsModer, IsOwner
 
 
-
 class CourseViewSet(ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
