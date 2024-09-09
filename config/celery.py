@@ -10,6 +10,3 @@ app = Celery('config')
 
 # Загрузка настроек из файла Django
 app.config_from_object('django.conf:settings', namespace='CELERY')
-
-# Автоматическое обнаружение и регистрация задач из файлов tasks.py в приложениях Django
-app.autodiscover_tasks()

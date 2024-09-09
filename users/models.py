@@ -117,6 +117,7 @@ class Subscription(models.Model):
         max_length=150,
         help_text="На какой курс подписан",
     )
+    is_subscribe = models.BooleanField(default=False, verbose_name="подписка")
 
     def __str__(self):
         return f"{self.user} подписан на курс: {self.course}"
